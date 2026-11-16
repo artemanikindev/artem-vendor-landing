@@ -36,11 +36,11 @@
 
 (function () {
   var LINKS = [
-    { key: 'google', id: 'ofB8Li', title: 'Google Meet rep', note: 'Test vendor website - Google Meet · ofB8Li', tone: 'ok' },
-    { key: 'outlook', id: '1sH5uT', title: 'Outlook Teams rep', note: 'Test vendor website - Outlook · 1sH5uT', tone: 'ok' },
-    { key: 'outlook-zoom', id: '7Niw68', title: 'Outlook Zoom rep', note: 'Test vendor website - Outlook Zoom · 7Niw68', tone: 'ok' },
-    { key: 'google-zoom', id: 'dbkSxG', title: 'Google Zoom rep', note: 'Test vendor website - Google Zoom · dbkSxG', tone: 'ok' },
-    { key: 'live', id: 'Lavmpl', title: 'Live link', note: 'Calendar test · Lavmpl', tone: 'ok' },
+    { key: 'google', id: 'ofB8Li', title: 'Google Meet rep', note: 'Vendor site, slots, time zone - Google Meet · ofB8Li → Google Meet rep', tone: 'ok' },
+    { key: 'outlook', id: '1sH5uT', title: 'Outlook Teams rep', note: 'Vendor site, slots, time zone - Outlook Teams · 1sH5uT → Outlook Teams rep', tone: 'ok' },
+    { key: 'outlook-zoom', id: '7Niw68', title: 'Outlook Zoom rep', note: 'Vendor site, slots, time zone - Outlook Zoom · 7Niw68 → Outlook Zoom rep', tone: 'ok' },
+    { key: 'google-zoom', id: 'dbkSxG', title: 'Google Zoom rep', note: 'Vendor site, slots, time zone - Google Zoom · dbkSxG → Google Zoom rep', tone: 'ok' },
+    { key: 'live', id: 'Lavmpl', title: 'Live link', note: 'Calendar test · Lavmpl → Google Meet rep', tone: 'ok' },
     { key: 'expired', id: 'Apbel5', title: 'Expired event link', note: 'QA KN-2959 Expired · Apbel5 · Oct 1–3, 2026', tone: 'warn' },
     { key: 'deleted', id: '1DQ2WQ', title: 'Deleted link', note: 'QA Lane A - deleted link · 1DQ2WQ', tone: 'bad' }
   ];
