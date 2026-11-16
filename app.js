@@ -36,6 +36,8 @@
 
 (function () {
   var LINKS = [
+    { key: 'google', id: 'ofB8Li', title: 'Google Meet rep', note: 'Test vendor website - Google Meet · ofB8Li', tone: 'ok' },
+    { key: 'outlook', id: '1sH5uT', title: 'Outlook rep', note: 'Test vendor website - Outlook · 1sH5uT', tone: 'ok' },
     { key: 'live', id: 'Lavmpl', title: 'Live link', note: 'Calendar test · Lavmpl', tone: 'ok' },
     { key: 'expired', id: 'Apbel5', title: 'Expired event link', note: 'QA KN-2959 Expired · Apbel5 · Oct 1–3, 2026', tone: 'warn' },
     { key: 'deleted', id: '1DQ2WQ', title: 'Deleted link', note: 'QA Lane A - deleted link · 1DQ2WQ', tone: 'bad' }
