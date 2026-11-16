@@ -45,7 +45,7 @@
   var MODE_KEY = 'qa-open-in-modal';
 
   function readModalMode() {
-    try { return localStorage.getItem(MODE_KEY) !== 'false'; } catch (e) { return true; }
+    try { return localStorage.getItem(MODE_KEY) === 'true'; } catch (e) { return false; }
   }
   function saveModalMode(value) {
     try { localStorage.setItem(MODE_KEY, String(value)); } catch (e) {}
@@ -71,6 +71,7 @@
         }).join('') +
       '</div>' +
       '<label class="chooser-mode"><input type="checkbox" id="chooser-modal"> Open in modal (Knock tag on this page)</label>' +
+      '<p class="chooser-hint">Modal currently loads from production (staging tag config) — every link shows "not found" there. Use page mode for real staging results.</p>' +
     '</div>';
   document.body.appendChild(overlay);
 
