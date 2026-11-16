@@ -177,3 +177,6 @@ footer { border-top: 1px solid var(--line); padding: 32px; color: #5f6487; font-
 .chooser-dot.ok { background: var(--ok); box-shadow: 0 0 10px var(--ok); }
 .chooser-dot.warn { background: var(--warn); box-shadow: 0 0 10px var(--warn); }
 .chooser-dot.bad { background: #f87171; box-shadow: 0 0 10px #f87171; }
+.chooser-mode { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-size: 14px; color: var(--text); cursor: pointer; }
+.chooser-mode input { width: 16px; height: 16px; accent-color: var(--accent); padding: 0; }
+.qa-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }

@@ -36,10 +36,23 @@
 
 (function () {
   var LINKS = [
-    { key: 'live', title: 'Live link', note: 'Calendar test · Lavmpl', tone: 'ok', url: 'https://stg.start-chat.com/m/artem-vendor/Lavmpl' },
-    { key: 'expired', title: 'Expired event link', note: 'QA KN-2959 Expired · Apbel5 · Oct 1–3, 2026', tone: 'warn', url: 'https://stg.start-chat.com/m/artem-vendor/Apbel5' },
-    { key: 'deleted', title: 'Deleted link', note: 'QA Lane A - deleted link · 1DQ2WQ', tone: 'bad', url: 'https://stg.start-chat.com/m/artem-vendor/1DQ2WQ' }
+    { key: 'live', id: 'Lavmpl', title: 'Live link', note: 'Calendar test · Lavmpl', tone: 'ok' },
+    { key: 'expired', id: 'Apbel5', title: 'Expired event link', note: 'QA KN-2959 Expired · Apbel5 · Oct 1–3, 2026', tone: 'warn' },
+    { key: 'deleted', id: '1DQ2WQ', title: 'Deleted link', note: 'QA Lane A - deleted link · 1DQ2WQ', tone: 'bad' }
   ];
+
+  var PUBLIC_BASE = 'https://stg.start-chat.com/m/artem-vendor/';
+  var MODE_KEY = 'qa-open-in-modal';
+
+  function readModalMode() {
+    try { return localStorage.getItem(MODE_KEY) !== 'false'; } catch (e) { return true; }
+  }
+  function saveModalMode(value) {
+    try { localStorage.setItem(MODE_KEY, String(value)); } catch (e) {}
+  }
+  function modalUrl(id) {
+    return window.location.pathname + '?_kom=/schedule?magicLinkId=' + id;
+  }
 
   var overlay = document.createElement('div');
   overlay.className = 'chooser';
@@ -51,14 +64,27 @@
       '<h3 id="chooser-title">Which booking link?</h3>' +
       '<div class="chooser-list">' +
         LINKS.map(function (l) {
-          return '<a class="chooser-item" data-key="' + l.key + '" href="' + l.url + '">' +
+          return '<a class="chooser-item" data-id="' + l.id + '" href="' + PUBLIC_BASE + l.id + '">' +
             '<span class="chooser-dot ' + l.tone + '"></span>' +
             '<span><b>' + l.title + '</b><small>' + l.note + '</small></span>' +
             '<span class="chooser-arrow">→</span></a>';
         }).join('') +
       '</div>' +
+      '<label class="chooser-mode"><input type="checkbox" id="chooser-modal"> Open in modal (Knock tag on this page)</label>' +
     '</div>';
   document.body.appendChild(overlay);
+
+  var modeInput = overlay.querySelector('#chooser-modal');
+  modeInput.checked = readModalMode();
+  modeInput.addEventListener('change', function () { saveModalMode(modeInput.checked); });
+
+  overlay.querySelectorAll('.chooser-item').forEach(function (item) {
+    item.addEventListener('click', function (event) {
+      if (!modeInput.checked) return;
+      event.preventDefault();
+      window.location.href = modalUrl(item.dataset.id);
+    });
+  });
 
   function open() { overlay.hidden = false; }
   function close() { overlay.hidden = true; }
