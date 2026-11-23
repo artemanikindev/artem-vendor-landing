@@ -119,27 +119,43 @@
     });
   });
 
-  var legacy = findLink('7LcOEe');
-  if (legacy) {
-    var widget = document.createElement('button');
-    widget.type = 'button';
-    widget.className = 'legacy-widget';
-    widget.setAttribute('aria-label', 'Book a demo (legacy Knock widget)');
-    widget.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' +
-      '<span>Book a demo <small>legacy widget</small></span>';
-    widget.addEventListener('click', function () {
-      window.location.href = modalUrl(legacy.id);
-    });
-    document.body.appendChild(widget);
+  var TAG_LINK_ID = 'WODYUE';
+  var TAG_SCHEDULE_URL = 'https://login.stg.start-chat.com/modal/4b71b520-c91f-487b-a40d-57c78b88df66/schedule?magicLinkId=' + TAG_LINK_ID;
+
+  var tagLink = document.createElement('a');
+  tagLink.className = 'legacy-widget';
+  tagLink.href = TAG_SCHEDULE_URL;
+  tagLink.target = '_blank';
+  tagLink.setAttribute('aria-label', 'Book a demo (Knock tag link)');
+  tagLink.innerHTML =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' +
+    '<span>Book a demo <small>tag link · WODYUE</small></span>';
+  document.body.appendChild(tagLink);
+
+  function knockApi() {
+    return window.Knock && window.Knock.modal ? window.Knock : null;
   }
+
+  document.querySelectorAll('[data-knock-action]').forEach(function (button) {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      var api = knockApi();
+      if (!api) return;
+      var action = button.dataset.knockAction;
+      if (action === 'modal-link') api.modal.open({ magicLinkId: TAG_LINK_ID });
+      if (action === 'modal-default') api.modal.open();
+    });
+  });
 
   var form = document.getElementById('contact-form');
   if (form) {
     form.addEventListener('submit', function (event) {
       event.preventDefault();
-      open();
+      var api = window.Knock && window.Knock.scheduling ? window.Knock : null;
+      var email = form.querySelector('input[name="email"]').value;
+      if (!api) { open(); return; }
+      api.scheduling.load({ magicLinkId: TAG_LINK_ID, email: email }).open();
     });
   }
 })();
