@@ -42,7 +42,10 @@
     { key: 'google-zoom', id: 'dbkSxG', title: 'Google Zoom rep', note: 'Vendor site, slots, time zone - Google Zoom · dbkSxG → Google Zoom rep', tone: 'ok' },
     { key: 'live', id: 'Lavmpl', title: 'Live link', note: 'Calendar test · Lavmpl → Google Meet rep', tone: 'ok' },
     { key: 'expired', id: 'Apbel5', title: 'Expired event link', note: 'QA KN-2959 Expired · Apbel5 · Oct 1–3, 2026', tone: 'warn' },
-    { key: 'deleted', id: '1DQ2WQ', title: 'Deleted link', note: 'QA Lane A - deleted link · 1DQ2WQ', tone: 'bad' }
+    { key: 'deleted', id: '1DQ2WQ', title: 'Deleted link', note: 'QA Lane A - deleted link · 1DQ2WQ', tone: 'bad' },
+    { key: 'legacy-widget', id: '7LcOEe', title: 'Legacy Book a demo widget', note: 'A-3.10 Legacy widget · 7LcOEe → channel picker, Book a Demo → Default Meeting Routing', tone: 'ok',
+      komPath: '/7076839c-a368-4059-9866-6faab93a213d?magicLinkId=7LcOEe',
+      pageUrl: 'https://login.stg.start-chat.com/modal/4b71b520-c91f-487b-a40d-57c78b88df66/7076839c-a368-4059-9866-6faab93a213d?magicLinkId=7LcOEe' }
   ];
 
   var PUBLIC_BASE = 'https://stg.start-chat.com/m/artem-vendor/';
@@ -54,8 +57,16 @@
   function saveModalMode(value) {
     try { localStorage.setItem(MODE_KEY, String(value)); } catch (e) {}
   }
+  function findLink(id) {
+    return LINKS.filter(function (l) { return l.id === id; })[0];
+  }
   function modalUrl(id) {
-    return window.location.pathname + '?_kom=/schedule?magicLinkId=' + id;
+    var link = findLink(id);
+    var komPath = link && link.komPath ? link.komPath : '/schedule?magicLinkId=' + id;
+    return window.location.pathname + '?_kom=' + komPath;
+  }
+  function pageUrl(link) {
+    return link.pageUrl || PUBLIC_BASE + link.id;
   }
 
   var overlay = document.createElement('div');
@@ -68,7 +79,7 @@
       '<h3 id="chooser-title">Which booking link?</h3>' +
       '<div class="chooser-list">' +
         LINKS.map(function (l) {
-          return '<a class="chooser-item" data-id="' + l.id + '" href="' + PUBLIC_BASE + l.id + '">' +
+          return '<a class="chooser-item" data-id="' + l.id + '" href="' + pageUrl(l) + '">' +
             '<span class="chooser-dot ' + l.tone + '"></span>' +
             '<span><b>' + l.title + '</b><small>' + l.note + '</small></span>' +
             '<span class="chooser-arrow">→</span></a>';
@@ -107,6 +118,22 @@
       open();
     });
   });
+
+  var legacy = findLink('7LcOEe');
+  if (legacy) {
+    var widget = document.createElement('button');
+    widget.type = 'button';
+    widget.className = 'legacy-widget';
+    widget.setAttribute('aria-label', 'Book a demo (legacy Knock widget)');
+    widget.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' +
+      '<span>Book a demo <small>legacy widget</small></span>';
+    widget.addEventListener('click', function () {
+      window.location.href = modalUrl(legacy.id);
+    });
+    document.body.appendChild(widget);
+  }
 
   var form = document.getElementById('contact-form');
   if (form) {
